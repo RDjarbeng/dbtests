@@ -10,7 +10,6 @@ set_error_handler(function($errno, $errstr, $errfile, $errline) {
   throw new ErrorException($errstr, 0, $errno, $errfile, $errline);
 });
 
-//NHIA
 function runMySQLFunction() {
                   global $error_msg;
                   global $table_content;
@@ -21,30 +20,25 @@ function runMySQLFunction() {
                   if (mysqli_connect_errno()) {
                   $error_msg."Failed to connect to MySQL: " . mysqli_connect_error()."<br />" ;
                   } else {
+                      $email = $_POST['email'];
+                      $name = $_POST['name'];
+                      $age = $_POST['age'];
+                      $student_id = $_POST['student_id'];
+                    // $result = mysqli_query($conn,"SELECT * FROM users");
 
-                    $result = mysqli_query($conn,"SELECT * FROM users");
-                    
-                    // $table_content='';
-                    while($row = mysqli_fetch_assoc($result))
-                    {
+                    $sql = "INSERT INTO users (name,  email, student_id, age )
+VALUES ($name, $email, $student_id, $age)";
 
-                    $table_content .= getTableRow($row);
-                    /* //old code 
-                    "<tr>".
-                    "<td><div class='d-flex px-2 py-1'><div class='d-flex flex-column justify-content-center'> <h6 class='mb-0 text-sm'>". $row['Name'] . "</h6></div></div></td>".
-                    "<td> <p class='text-xs font-weight-bold mb-0'>". $row['Student ID'] ."</p></td>".
-                    "<td class='align-middle text-center text-sm'> <p class='text-xs font-weight-bold mb-0'>". $row['Email'] ."</p></td>".
-                    "<td class='align-middle text-center text'> <p class='text-xs font-weight-bold mb-0'>". $row['Age'] ."</p></td>".
-                    "</tr>";                   
-                    
-                    // var_dump($table_content);
-                    */
-                    }
+if ($conn->query($sql) === TRUE) {
+  $error_msg.= "New record created successfully";
+} else {
+  $error_msg.= "Error: " . $sql . "<br>" . $conn->error;
+}
                     mysqli_close($conn);
                   }
                 
                 }
-//DVLA
+
                 function runpostgreSQLFunction() {
                   global $error_msg;
                   global $table_content;
@@ -53,16 +47,17 @@ function runMySQLFunction() {
                   $conn = pg_connect("host=localhost dbname=postgresql user=postgres password=1234");
                   // Check for database connection error
                     if( $conn ) {
-                      
-                      $result = pg_query($conn,"SELECT * FROM users");
+                        $email = $_POST['email'];
+                        $name = $_POST['name'];
+                        $age = $_POST['age'];
+                        $student_id = $_POST['student_id'];
+                        $query = "INSERT INTO users (name,  email, student_id, age ) VALUES ('$email','$name','$student_id','$age')";
+                        $result = pg_query($query);
                       if (!$result) {
                         $error_msg.="An error occurred.<br />";
                         
                       }else{
-                      while($row = pg_fetch_assoc($result))
-                      {
-                        $table_content .= getTableRow($row);
-                      }
+                        $error_msg.="Successful row creation.<br />";
                     }
 
                                    
@@ -71,7 +66,7 @@ function runMySQLFunction() {
                   }
                 
                 }
-//iMMIGRATION
+
                 function runmsSQLFunction() {
                   global $error_msg;
                   global $table_content;
@@ -85,17 +80,16 @@ function runMySQLFunction() {
                   $conn = sqlsrv_connect( $serverName, $connectionInfo);
                   if( $conn ) {
                     
-                      $result = sqlsrv_query($conn,"SELECT * FROM users");
+                    $email = $_POST['email'];
+                    $name = $_POST['name'];
+                    $age = $_POST['age'];
+                    $student_id = $_POST['student_id'];
+                      $result = sqlsrv_query($conn,"INSERT INTO users VALUES ('$student_id','$name','$email','$age')");
 
                       if (!$result) {
-                        $error_msg.="Failed to connect to Microsoft SQL Server:<br />".sqlsrv_errors();
+                        $error_msg.="Failed to connect to Microsoft SQL Server:<br />".var_dump(sqlsrv_errors());
                       }else{
-
-                      while($row = sqlsrv_fetch_array($result))
-                      {
-                        $table_content .= getTableRow($row);
-                      }
-
+                        $error_msg.="Successful row creation.<br />";
                       sqlsrv_free_stmt( $result);
                       sqlsrv_close( $conn );
                     }
@@ -116,7 +110,12 @@ function runMySQLFunction() {
                   $conn = oci_connect('system', '1234', 'localhost/XE');
                   if( $conn ) {
                     
-                    $result = oci_parse($conn,"SELECT * FROM ORACLEDB.\"users\"");
+                    $email = $_POST['email'];
+                    $name = $_POST['name'];
+                    $age = $_POST['age'];
+                    $student_id = $_POST['student_id'];
+                    //(student_id, name, email, age )
+                    $result = oci_parse($conn,"INSERT INTO ORACLEDB.\"users\" VALUES ('$student_id','$name','$email','$age')");
                     oci_execute($result);
 
                     if (!$result) {
@@ -124,11 +123,7 @@ function runMySQLFunction() {
                       
                     }else {
 
-                    while($row = oci_fetch_array($result, OCI_ASSOC+OCI_RETURN_NULLS))
-                    {
-                      $table_content .= getTableRow($row);
-                    }
-
+                        $error_msg.="Successful row creation.<br />";
                     oci_free_statement($result);
                     oci_close($conn);
                   }
@@ -146,7 +141,7 @@ function runMySQLFunction() {
                                   </tr>
 INPUT;
                 }
-                try{
+                // try{
                 if (array_key_exists('mysql', $_POST)) {
                   runMySQLFunction();
                 }
@@ -162,10 +157,10 @@ INPUT;
                  if (array_key_exists('oracle', $_POST)) {
                   runoracleFunction();
                 }
-              }catch(ErrorException $e){
-                $error_msg.= $e-> getMessage();
+            //   }catch(ErrorException $e){
+            //     $error_msg.= $e-> getMessage();
 
-              }
+            //   }
               ?>
 
 <!DOCTYPE html>
@@ -184,7 +179,7 @@ INPUT;
   <?php 
   if (!empty($error_msg)) {
     echo <<<ERROR
-    <div class="alert alert-danger alert-dismissible">
+    <div class="alert alert-success alert-dismissible">
   <button type="button" class="close" data-dismiss="alert">&times;</button>
   $error_msg
 </div>
@@ -197,55 +192,38 @@ ERROR
 
 <div class="row container-fluid pt-3">
   <!-- Buttons -->
-<form method="post" class="col col-lg-3 formGroup">
-    <div class="row ">
+<form method="post" class="row formGroup">
+    <div class="row  col-sm-3">
       <div class="col-sm-12  mb-2">
-        <input type="submit" class='btn btn-info  dButton w-100 pt-2 mb-1' name="mysql" value="NHIA - MYSQL" />
+        <input type="submit" class='submit_btn w-100 ' name="mysql" value="NHIA - MYSQL" />
       </div>
-      <div class="col-sm-12   mb-2">
-        <input type="submit" class='btn btn-info dButton  w-100 pt-2 mb-1' name="postgreSQL" value="DVLA-PostgreSQL" />
+      <div class="col-sm-12   mb-n">
+        <input type="submit" class='submit_btn w-100 ' name="postgreSQL" value="DVLA-PostgreSQL" />
       </div>
       <div class="col-sm-12  mb-2">                           
-        <input type="submit" class='btn btn-info  dButton w-100 pt-2 mb-1' name="mssql" value="Immigration - Microsoft SQL" />
+        <input type="submit" class='submit_btn w-100 ' name="mssql" value="Immigration - Microsoft SQL" />
       </div>
       <div class="col-sm-12  mb-2">                                   
-        <input type="submit" class='btn btn-info  dButton w-100 pt-2 mb-1' name="oracle" value="EC-Oracle" />
+        <input type="submit" class='submit_btn w-100 ' name="oracle" value="EC-Oracle" />
       </div>
-      
-    </div>
-    <a href="./insert.php">
+      </div>
+      <div class="box col-sm-9 col-lg-9" action="index.html" method="post">
+  <h1>Enter user</h1>
+  <div><input type="text" name="student_id" placeholder="ID"></div>
+  <div><input type="text" name="name" placeholder="Name"></div>
+  <div><input type="text" name="email" placeholder="Email"></div>
+  <div><input type="text" name="age" placeholder="Age"></div>
+</div>
+    
+    <a href="/dbtests/index.php">
     <div class="btn btn-primary">
-  Insert into database
+  Back to dashboard
 </div>
 </a>
 </form>
 
 
-<div class="col-sm-12 col-lg-9">
-<table class="list_table table ">
-  <thead>
-    
-    <tr>
-      <th>Name</th>
-      <th>ID</th>
-      <th>Email</th>
-    </tr>
-  </thead>
-  <tbody>
-  <?php 
-  if (!empty($table_content)) {
-  echo $table_content;
-} else { echo "";}
-?>
-<!-- Dummy user -->
-    <!-- <tr>
-      <td>John</td>
-      <td>Doe</td>
-      <td>john@example.com</td>
-    </tr> -->
-  </tbody>
-</table>
-</div>
+
 </div>
   </body>
   
