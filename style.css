@@ -1,0 +1,118 @@
+
+body{
+  margin: 0;
+  padding: 0;
+  /* display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  font-family: sans-serif;
+  color:white;
+  background: #030d17;
+  /* background: #34495e; */
+}
+.box{
+  /* width: 60%; */
+  display: block;
+  padding: 40px;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  /* transform: translate(-50%,-50%); */
+  background: #191919;
+  text-align: center;
+}
+.box h1{
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.box input[type = "text"],.box input[type = "password"]{
+  border:0;
+  background: none;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  /* width: 50%; */
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+.box input[type = "text"]:focus,.box input[type = "password"]:focus{
+  width: 280px;
+  border-color: #2ecc71;
+}
+.box input[type = "submit"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2ecc71;
+  padding: 14px 40px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.box input[type = "submit"]:hover{
+  background: #2ecc71;
+}
+
+/* MY CODE */
+/* buttons */
+.dButton{
+  font-size: 1.2rem;
+  background-color: #3498db61;
+}
+
+.formGroup{
+  border-right:2px solid #1af9da8c;
+  
+}
+.list_table thead th, .list_table td, .list_table th  {
+  border: none;
+}
+
+.list_table{
+  color:white;
+  padding: 5px;
+  width:100%;
+  background-color: #191919;
+  border-radius: 3%;
+  border-collapse: collapse;
+  border-spacing:0 10px;
+}
+
+
+.list_table thead tr{
+  /* margin: 20px auto; */
+  /* text-align: center; */
+  outline: 2px  solid #2ecc71;
+  padding: 14px 40px;
+  margin-bottom: 20px;
+  color: white;
+  transition: 0.55s;
+}
+
+.list_table tbody tr{
+  outline:1px solid #3498db;
+  padding: 14px 40px;
+  margin-bottom: 20px;
+  color: white;
+  transition: 0.45s;
+}
+.list_table tbody tr:nth-of-type(odd) {
+  background-color: #2b2a2a;
+}
+
+.list_table tbody tr:hover{
+  background: #2ecc71;
+  outline: none;
+}

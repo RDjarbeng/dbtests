@@ -1,0 +1,97 @@
+
+body{
+  /* display:flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; */
+  font-family: sans-serif;
+  color:white;
+  /* background: #34495e; */
+}
+.box{
+  /* width: 60%; */
+  display: block;
+  padding: 40px;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  /* transform: translate(-50%,-50%); */
+  background: #191919;
+  text-align: center;
+}
+.box h1{
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.box input[type = "text"],.box input[type = "password"]{
+  border:0;
+  background: none;
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  /* width: 50%; */
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+}
+.box input[type = "text"]:focus,.box input[type = "password"]:focus{
+  width: 280px;
+  border-color: #2ecc71;
+}
+.box input[type = "submit"]{
+  border:0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #2ecc71;
+  padding: 14px 40px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.25s;
+  cursor: pointer;
+}
+.box input[type = "submit"]:hover{
+  background: #2ecc71;
+}
+
+/* MY CODE */
+nav .link_button{
+  background:inherit;
+  border:none;
+  color:inherit;
+}
+.list_table thead th, .list_table td, .list_table th  {
+}
+
+.list_table tbody tr{
+  /* outline: 2px 0px solid #2ecc71; */
+}
+
+.list_table thead tr{
+  /* margin: 20px auto; */
+  /* text-align: center; */
+  padding: 14px 40px;
+  margin-bottom: 20px;
+  transition: 0.55s;
+}
+
+.list_table tbody tr{
+  padding: 14px 40px;
+  margin-bottom: 20px;
+  transition: 0.45s;
+}
+.list_table tbody tr:nth-of-type(odd) {
+}
+
+.list_table tbody tr:hover{
+  background: #606ef04d;
+  outline: none;
+}
